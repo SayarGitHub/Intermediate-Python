@@ -1,3 +1,4 @@
+# argparse give us more flexibility and readability to take user inputs from CLI
 import argparse
 import sys
 
@@ -10,7 +11,9 @@ def main():
     parser.add_argument(
         "--y", type=float, default=1.0, help="What is the second number?"
     )
-    parser.add_argument("--operation", type=str, default='add', help="What is the operation?")
+    parser.add_argument(
+        "--operation", type=str, default="add", help="What is the operation?"
+    )
     args = parser.parse_args()
     sys.stdout.write(str(calc(args)))
 
@@ -25,6 +28,7 @@ def calc(args):
         return args.x * args.y
     elif args.operation == "div":
         return args.x / args.y
+
 
 if __name__ == "__main__":
     main()
