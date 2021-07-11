@@ -1,5 +1,5 @@
-# range() is a generator. List comprehension saves entire list to memory.
-# So, generally list comprehensions are memory heavy but fast to iterate over.
+# range() is a generator. List comprehension saves entire list to memory. So,
+# generally list comprehensions are memory heavy but fast to iterate over.
 # Whereas generators are more memory efficient, but slow to iterate over.
 
 
@@ -25,4 +25,7 @@ result = [i for i in input_list if div_five(i)]
 print("f", result)
 [print("g", i) for i in result]
 
-[[print(i,ii) for ii in range(5)] for i in range(5)] #nested loops usinng list comprehension
+[
+    [print(i, ii) for ii in range(5)] for i in range(5)
+]  # nested loops usinng list comprehension
+
