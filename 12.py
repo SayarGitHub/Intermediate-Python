@@ -139,7 +139,7 @@ say_whee_2()
 # So, @my_decorator is just an easier way of saying say_whee =
 # my_decorator(say_whee)
 
-from do_twice import do_twice
+from decorators import do_twice
 
 
 @do_twice
@@ -171,3 +171,98 @@ print(
 
 # Introspection
 
+print(say_whee_3.__name__)
+# However, after being decorated, say_whee() has gotten very confused about its
+# identity. It now reports being the wrapper_do_twice() inner function inside
+# the do_twice() decorator. Although technically true, this is not very useful
+# information.
+
+# To fix this, decorators should use the @functools.wraps decorator, which will
+# preserve information about the original function.
+
+# Decorators on classes
+from decorators import debug, timer
+
+
+class TimeWaster:
+    @debug
+    def __init__(self, max_num):
+        self.max_num = max_num
+
+    @timer
+    def waste_time(self, num_times):
+        for _ in range(num_times):
+            sum([i ** 2 for i in range(self.max_num)])
+
+
+tw = TimeWaster(1000)
+tw.waste_time(999)
+
+# The other way to use decorators on classes is to decorate the whole class.
+@timer
+class TimeWaster_1:
+    def __init__(self, max_num):
+        self.max_num = max_num
+
+    def waste_time(self, num_times):
+        for _ in range(num_times):
+            sum([i ** 2 for i in range(self.max_num)])
+
+
+tw = TimeWaster_1(
+    1000
+)  # Here, @timer only measures the time it takes to instantiate the class
+
+# You can apply several decorators to a function by stacking them on top of each
+# other
+
+
+@debug
+@do_twice
+def greet_1(name):
+    print(
+        f"Hello {name}"
+    )  # In other words, @debug calls @do_twice, which calls greet(), or debug(do_twice(greet()))
+
+
+greet_1("Stacy")
+
+# Sometimes, it’s useful to pass arguments to your decorators. For instance,
+# @do_twice could be extended to a @repeat(num_times) decorator. The number of
+# times to execute the decorated function could then be given as an argument.
+
+from decorators import repeat
+
+
+@repeat(num_times=4)
+def greet_3(name):
+    print(f"Hello {name}")
+
+
+greet_3("Meaow")
+
+# Sometimes, it’s useful to have a decorator that can keep track of state. As a
+# simple example, we will create a decorator that counts the number of times a
+# function is called.
+
+from decorators import count_calls
+
+
+@count_calls
+def say_whee_4():
+    print("Whee!")
+
+
+say_whee_4()
+say_whee_4()
+
+# Classes as Decorators, the typical way to maintain state is by using classes.
+# In this section, you’ll see how to rewrite the @count_calls example from the
+# previous section using a class as a decorator.
+
+from decorators import CountCalls
+@CountCalls
+def say_whee_5():
+    print("Whee!")
+
+say_whee_5()
