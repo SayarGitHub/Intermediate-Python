@@ -27,5 +27,5 @@ print("f", result)
 
 [
     [print(i, ii) for ii in range(5)] for i in range(5)
-]  # nested loops usinng list comprehension
+]  # nested loops using list comprehension
 
